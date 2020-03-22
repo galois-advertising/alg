@@ -18,6 +18,7 @@ public:
             }
         }
     };
+
     trie() : root(std::make_shared<node>(' ')) {}
     trie(const trie& ) = delete;
 
