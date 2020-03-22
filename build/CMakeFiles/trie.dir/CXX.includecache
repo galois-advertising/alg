@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/trie.h
+string
+-
+memory
+-
+
+/Users/huyifeng/Desktop/alg/test/trie.cpp
+iostream
+-
+trie.h
+/Users/huyifeng/Desktop/alg/test/trie.h
+
