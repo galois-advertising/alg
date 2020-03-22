@@ -48,6 +48,18 @@ public:
         }
         return true;
     }
+    bool startsWith(std::string str) {
+        auto pos = root;
+        for (auto ch : str) {
+            auto index = ch - 'a';
+            if (pos->children[index] == nullptr) {
+                return false;
+            } else {
+                pos = pos->children[index];
+            }
+        }
+        return true;
+    }
 
 };
 std::ostream& operator<< (std::ostream& os, const typename trie::node& node) {
