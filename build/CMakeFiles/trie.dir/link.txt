@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++   -g  -O0 -Wall -g -ggdb -std=c++17 -fno-strict-aliasing -Wno-register -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/trie.dir/test/trie.cpp.o  -o trie 
