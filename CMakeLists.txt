@@ -7,5 +7,21 @@ set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb -std=c++17 -fno-str
 set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall -std=c++17 -fno-strict-aliasing -Wno-register")
 set(CMAKE_BUILD_TYPE "Debug")
 include_directories("${PROJECT_SOURCE_DIR}/include")
+find_package(Boost REQUIRED COMPONENTS log)
+if(NOT Boost_FOUND)
+    message("Can not find Boost")
+endif()
+add_definitions(-DBOOST_SPIRIT_THREADSAFE)
+add_definitions(-DBOOST_ALL_DYN_LINK)
+add_definitions(-D_DEBUG)
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+include_directories("${PROJECT_SOURCE_DIR}/common/util/include")
+set(SRCS
+"${PROJECT_SOURCE_DIR}/common/util/src/log.cpp" 
+)
 
-add_executable(trie "${PROJECT_SOURCE_DIR}/test/trie.cpp")
+add_executable(trie ${SRCS} "${PROJECT_SOURCE_DIR}/test/trie.cpp")
+target_link_libraries(trie boost_log-mt)
+add_executable(heap ${SRCS} "${PROJECT_SOURCE_DIR}/test/heap.cpp")
+target_link_libraries(heap boost_log-mt)
