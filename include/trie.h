@@ -18,6 +18,7 @@ public:
             }
         }
     };
+
     trie() : root(std::make_shared<node>(' ')) {}
     trie(const trie& ) = delete;
 
@@ -45,6 +46,18 @@ public:
         }
         if (!pos->is_word) {
             return false;
+        }
+        return true;
+    }
+    bool startsWith(std::string str) {
+        auto pos = root;
+        for (auto ch : str) {
+            auto index = ch - 'a';
+            if (pos->children[index] == nullptr) {
+                return false;
+            } else {
+                pos = pos->children[index];
+            }
         }
         return true;
     }
