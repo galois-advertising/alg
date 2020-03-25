@@ -53,12 +53,12 @@ void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
     while (true) {
         auto swap = root;
         if (auto lchild = left_child(root, end); 
-            lchild >=0 && cmp(data[lchild], data[root])) {
+            lchild >=0 && !cmp(data[lchild], data[root])) {
             swap = lchild;
             TRACE("swap target = %d[lchild]", swap);
         } 
         if (auto rchild = right_child(root, end); 
-            rchild >= 0 && cmp(data[rchild], data[swap])) {
+            rchild >= 0 && !cmp(data[rchild], data[swap])) {
             swap = rchild;
             TRACE("swap target = %d[rchild]", swap);
         } 
@@ -77,6 +77,12 @@ void make_heap(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
         TRACE("shift_down %d[%d]", data[root], root);
         shift_down(data, root, data.size() - 1, cmp);
     }
+}
+
+template <typename T>
+void pop_heap(T &data, size_t last, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    std::swap(data[0], data[last]);
+    shift_down(data, 0, end - 1);
 }
 
 template <typename T>
