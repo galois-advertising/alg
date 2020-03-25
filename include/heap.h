@@ -5,6 +5,7 @@
 
 namespace alg {
 
+
 inline int parent(unsigned int i) {
     if (int res = (i - 1) / 2; res >= 0) {
         TRACE("parent(%u) = %d", i, res);
@@ -39,41 +40,53 @@ inline int right_child(unsigned int i, unsigned int end) {
 }
 
 template <typename T>
-void shift_down(T &data, unsigned begin, unsigned end) {
+bool default_cmp(const T& a, const T& b) {
+    return a < b;
+}
+
+template < typename T >
+using cmp_t = typename std::add_pointer<bool(const typename T::value_type&, const typename T::value_type&)>::type;
+
+template <typename T>
+void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
     auto root = begin;
     while (true) {
+        auto swap = root;
         if (auto lchild = left_child(root, end); 
-            lchild >=0 && data[lchild] > data[root]) {
-            TRACE("swap %d[%d] <-> %d[%d] root=%d", data[lchild], lchild, data[root], root, lchild)
-            std::swap(data[lchild], data[root]);
-            root = lchild;
-        } else if (auto rchild = right_child(root, end); 
-            rchild >= 0 && data[rchild] > data[root]) {
-            TRACE("swap %d[%d] <-> %d[%d] root=%d", data[rchild], rchild, data[root], root, rchild)
-            std::swap(data[rchild], data[root]);
-            root = rchild;
+            lchild >=0 && cmp(data[lchild], data[root])) {
+            swap = lchild;
+            TRACE("swap target = %d[lchild]", swap);
+        } 
+        if (auto rchild = right_child(root, end); 
+            rchild >= 0 && cmp(data[rchild], data[swap])) {
+            swap = rchild;
+            TRACE("swap target = %d[rchild]", swap);
+        } 
+        if (swap == root) {
+            return;
         } else {
-            break;
+            TRACE("swap %d[%d] <-> %d[%d] root=%d", data[swap], swap, data[root], root,swap);
+            std::swap(data[swap], data[root]);
+            root = swap;
         }
     }
 }
 template <typename T>
-void make_heap(T &data) {
-    auto root = parent((data.size() - 1));
-    while (root >= 0) {
+void make_heap(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    for (auto root = parent(data.size() - 1); root >= 0; --root) {
         TRACE("shift_down %d[%d]", data[root], root);
-        shift_down(data, root, data.size() - 1);
-        root = root - 1;
+        shift_down(data, root, data.size() - 1, cmp);
     }
 }
 
 template <typename T>
-void heap_sort(T &data) {
-    make_heap(data);
-    auto len = data.size();
-    while (len > 1) {
-        std::swap(data[0], data[len - 1]);
-        shift_down(data, 0, --len);
+void heap_sort(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    make_heap(data, cmp);
+    TRACE("make_heap done", "");
+    for (auto last = data.size() - 1; last > 0; --last) {
+        TRACE("[%d] ok", data[0]);
+        std::swap(data[0], data[last]);
+        shift_down(data, 0, last - 1, cmp);
     }
 }
 
