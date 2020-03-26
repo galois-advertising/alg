@@ -49,6 +49,9 @@ using cmp_t = typename std::add_pointer<bool(const typename T::value_type&, cons
 
 template <typename T>
 void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
+    if (begin > data.size() - 1 ||  end > data.size() - 1) {
+        return;
+    }
     auto root = begin;
     while (true) {
         auto swap = root;
@@ -81,8 +84,12 @@ void make_heap(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
 
 template <typename T>
 void pop_heap(T &data, size_t last, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    if (last > data.size() - 1) {
+        FATAL("pop heap fail: last=[%lu]", last);
+        return;
+    }
     std::swap(data[0], data[last]);
-    shift_down(data, 0, end - 1);
+    shift_down(data, 0, last - 1, cmp);
 }
 
 template <typename T>
