@@ -89,7 +89,9 @@ void pop_heap(T &data, size_t last, cmp_t<T> cmp = default_cmp<typename T::value
         return;
     }
     std::swap(data[0], data[last]);
-    shift_down(data, 0, last - 1, cmp);
+    if (last > 0) {
+        shift_down(data, 0, last - 1, cmp);
+    }
 }
 
 template <typename T>
@@ -97,9 +99,7 @@ void heap_sort(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
     make_heap(data, cmp);
     TRACE("make_heap done", "");
     for (auto last = data.size() - 1; last > 0; --last) {
-        TRACE("[%d] ok", data[0]);
-        std::swap(data[0], data[last]);
-        shift_down(data, 0, last - 1, cmp);
+        pop_heap(data, last, cmp);
     }
 }
 
