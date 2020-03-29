@@ -105,8 +105,8 @@ tree_node_t* create_from_pre_order(std::list<T>& values, const T& null) {
     TRACE("create root: [%s]", ss.str().c_str());
 #endif
     values.pop_front();
-    current_root->left = create_from_pre_order<T>(values, null);
-    current_root->right= create_from_pre_order<T>(values, null);
+    current_root->left = create_from_pre_order<T, tree_node_t>(values, null);
+    current_root->right= create_from_pre_order<T, tree_node_t>(values, null);
     return current_root;
 }
 
