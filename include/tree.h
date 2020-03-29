@@ -1,9 +1,12 @@
 #pragma once
 #include <list>
+#include <stack>
 #ifdef _DEBUG
 #include <sstream>
 #endif
 #include "log.h"
+
+namespace alg {
 
 template <typename T>
 struct TreeNode final {
@@ -12,18 +15,79 @@ struct TreeNode final {
     TreeNode* right;
     TreeNode(const T& x) : val(x), left(nullptr), right(nullptr) {}
 };
+template <typename T>
+using visit_t = typename std::add_pointer<void(T&)>::type;
 
 template<typename T>
-void in_order_traversal(TreeNode<T>* root, typename std::add_pointer<void(const T&)>::type op) {
+void in_order_traversal(TreeNode<T>* root, visit_t<T> op) {
     if (root != nullptr) {
-        op(root->val);
         in_order_traversal(root->left, op);
+        op(root->val);
         in_order_traversal(root->right, op);
     }
 }
 
+template<typename T>
+void in_order_traversal_iteratively(TreeNode<T>* root, visit_t<T> op) {
+    std::stack<TreeNode<T>*> sta;
+    while (!sta.empty() || root != nullptr) {
+        if (root != nullptr) {
+            sta.push(root);
+            root = root->left;
+        } else {
+            op(sta.top()->val);
+            root = sta.top()->right;
+            sta.pop();
+        }
+    }
+}
+
+template<typename T>
+void pre_order_traversal(TreeNode<T>* root, visit_t<T> op) {
+    if (root != nullptr) {
+        op(root->val);
+        pre_order_traversal(root->left, op);
+        pre_order_traversal(root->right, op);
+    }
+}
+
 template <typename T>
-TreeNode<T>* create_from_in_order(std::list<T>& values, const T& null) {
+void pre_order_traversal_iteratively(TreeNode<T>* root, visit_t<T> op) {
+    if (root == nullptr) {
+        return;
+    }
+    std::stack<TreeNode<T>*> sta;
+    sta.push(root);
+    while (!sta.empty()) {
+        auto top = sta.top();
+        sta.pop();
+        // push right first
+        if (top->right) {
+            sta.push(top->right);
+        }
+        if (top->left) {
+            sta.push(top->left);
+        }
+        op(top->val);
+    }
+
+}
+
+template<typename T>
+void post_order_traversal(TreeNode<T>* root, visit_t<T> op) {
+    if (root != nullptr) {
+        post_order_traversal(root->left, op);
+        post_order_traversal(root->right, op);
+        op(root->val);
+    }
+}
+
+template<typename T>
+void post_order_traversal_iteratively(TreeNode<T>* root, visit_t<T> op) {
+}
+
+template <typename T>
+TreeNode<T>* create_from_pre_order(std::list<T>& values, const T& null) {
     if (values.empty()) {
         TRACE("values is empty.", "");
         return nullptr;
@@ -40,7 +104,10 @@ TreeNode<T>* create_from_in_order(std::list<T>& values, const T& null) {
     TRACE("create root: [%s]", ss.str().c_str());
 #endif
     values.pop_front();
-    current_root->left = create_from_in_order<T>(values, null);
-    current_root->right= create_from_in_order<T>(values, null);
+    current_root->left = create_from_pre_order<T>(values, null);
+    current_root->right= create_from_pre_order<T>(values, null);
     return current_root;
+}
+
+
 }
