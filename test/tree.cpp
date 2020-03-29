@@ -5,6 +5,18 @@
 using namespace std;
 
 
+/*
+
+    1
+  /   \
+2       3
+      /   \
+     4     5
+   /   \    \
+  6     7    8
+
+*/
+
 int main() {
     std::list<int> tvalues{1,2,-1,-1,3,4,6,-1,-1,7,-1,-1,5,-1,8,-1,-1};
     auto node = alg::create_from_pre_order(tvalues, -1);
