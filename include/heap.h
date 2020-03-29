@@ -1,17 +1,107 @@
 #pragma once
+#include <iterator>
+#include <algorithm>
+#include "log.h"
 
-#define iParent(i) floor(((i)-1) / 2)
-#define iLeftChild(i) 2*(i) + 1
-#define iRightChild(i) 2*(i) + 2
+namespace alg {
 
-template <typename Iter>
-void make_heap(Iter begin, Iter end) {
-      using _ValueType = typename iterator_traits<Iter>::value_type;
-      using _DistanceType = typename iterator_traits<Iter>::difference_type;
-      if (__last - __first < 2) {
-          return;
-      }
-      const _DistanceType len = end - begin;
-      _DistanceType __parent = (len - 2) / 2;
+
+inline int parent(unsigned int i) {
+    if (int res = (i - 1) / 2; res >= 0) {
+        TRACE("parent(%u) = %d", i, res);
+        return res;
+    }
+    else {
+        TRACE("parent(%u) = %d", i, -1);
+        return -1;
+    }
+}
+
+inline int left_child(unsigned int i, unsigned int end) {
+    if (int res = i * 2 + 1; res <= end) {
+        TRACE("left_child(%u, %u) = %d", i, end, res);
+        return res;
+    }
+    else {
+        TRACE("left_child(%u, %u) = %d", i, end, -1);
+        return -1;
+    }
+}
+
+inline int right_child(unsigned int i, unsigned int end) {
+    if (int res = i * 2 + 2; res <= end) {
+        TRACE("right_child(%u, %u) = %d", i, end, res);
+        return res;
+    }
+    else {
+        TRACE("right_child(%u, %u) = %d", i, end, -1);
+        return -1;
+    }
+}
+
+template <typename T>
+bool default_cmp(const T& a, const T& b) {
+    return a < b;
+}
+
+template < typename T >
+using cmp_t = typename std::add_pointer<bool(const typename T::value_type&, const typename T::value_type&)>::type;
+
+template <typename T>
+void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
+    if (begin > data.size() - 1 ||  end > data.size() - 1) {
+        return;
+    }
+    auto root = begin;
+    while (true) {
+        auto swap = root;
+        if (auto lchild = left_child(root, end); 
+            lchild >=0 && !cmp(data[lchild], data[root])) {
+            swap = lchild;
+            TRACE("swap target = %d[lchild]", swap);
+        } 
+        if (auto rchild = right_child(root, end); 
+            rchild >= 0 && !cmp(data[rchild], data[swap])) {
+            swap = rchild;
+            TRACE("swap target = %d[rchild]", swap);
+        } 
+        if (swap == root) {
+            return;
+        } else {
+            TRACE("swap %d[%d] <-> %d[%d] root=%d", data[swap], swap, data[root], root,swap);
+            std::swap(data[swap], data[root]);
+            root = swap;
+        }
+    }
+}
+template <typename T>
+void make_heap(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    for (auto root = parent(data.size() - 1); root >= 0; --root) {
+        TRACE("shift_down %d[%d]", data[root], root);
+        shift_down(data, root, data.size() - 1, cmp);
+    }
+}
+
+template <typename T>
+void pop_heap(T &data, size_t last, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    if (last > data.size() - 1) {
+        FATAL("pop heap fail: last=[%lu]", last);
+        return;
+    }
+    std::swap(data[0], data[last]);
+    if (last > 0) {
+        shift_down(data, 0, last - 1, cmp);
+    }
+}
+
+template <typename T>
+void heap_sort(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
+    make_heap(data, cmp);
+    TRACE("make_heap done", "");
+    for (auto last = data.size() - 1; last > 0; --last) {
+        pop_heap(data, last, cmp);
+    }
+}
+
 
 }
