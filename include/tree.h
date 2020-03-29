@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include <stack>
+#include <functional>
 #ifdef _DEBUG
 #include <sstream>
 #endif
@@ -16,7 +17,7 @@ struct tree_node_t final {
     tree_node_t(const T& x) : val(x), left(nullptr), right(nullptr) {}
 };
 template <typename T>
-using visit_t = typename std::add_pointer<void(T&)>::type;
+using visit_t = std::function<void(T&)>;
 
 template<typename T>
 void in_order_traversal(tree_node_t<T>* root, visit_t<T> op) {
