@@ -15,6 +15,7 @@ int main() {
     alg::pre_order_traversal_iteratively(node, visit);std::cout<<std::endl;
     alg::post_order_traversal(node, visit);std::cout<<std::endl;
     //alg::in_order_traversal_iteratively(node, visit);
+    alg::breadth_first_search_traversal(node, visit);std::cout<<std::endl;
     return 0;
 }
 

@@ -2,6 +2,7 @@
 #include <list>
 #include <stack>
 #include <functional>
+#include <queue>
 #ifdef _DEBUG
 #include <sstream>
 #endif
@@ -87,6 +88,26 @@ template<typename T, typename tree_node_t = default_tree_node_t<T>>
 void post_order_traversal_iteratively(tree_node_t* root, visit_t<T> op) {
 }
 
+
+template<typename T, typename tree_node_t = default_tree_node_t<T>>
+void breadth_first_search_traversal(tree_node_t* root, visit_t<T> op) {
+    std::queue<tree_node_t*> que;
+    if (root == nullptr) {
+        return;
+    }
+    que.push(root);
+    while (!que.empty()) {
+        op(que.front()->val);
+        if (que.front()->left) {
+            que.push(que.front()->left);
+        }
+        if (que.front()->right) {
+            que.push(que.front()->right);
+        }
+        que.pop();
+    }
+}
+
 template <typename T, typename tree_node_t = default_tree_node_t<T>>
 tree_node_t* create_from_pre_order(std::list<T>& values, const T& null) {
     if (values.empty()) {
@@ -111,4 +132,8 @@ tree_node_t* create_from_pre_order(std::list<T>& values, const T& null) {
 }
 
 
+template <typename T, typename tree_node_t = default_tree_node_t<T>>
+std::vector<tree_node_t*> create_bst() {
 }
+
+};
