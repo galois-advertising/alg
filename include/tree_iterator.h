@@ -38,7 +38,7 @@ public:
     tree_node_t& operator*() {
         return *sta.top();
     }
-    tree_node_t* operator++(int) {
+    tree_node_t* operator++() {
         auto top(sta.top());
         if (top != &end_node) {
             sta.pop();
@@ -85,7 +85,7 @@ public:
     tree_node_t& operator*() {
         return *sta.top();
     }
-    tree_node_t* operator++(int) {
+    tree_node_t* operator++() {
         auto top(sta.top());
         if (top != &end_node) {
             if (vtop == nullptr) {

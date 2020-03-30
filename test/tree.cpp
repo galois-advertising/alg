@@ -25,7 +25,7 @@ int main() {
     //alg::tree::in_order_traversal(node, visit);std::cout<<std::endl;
     alg::tree::in_order_traversal_iteratively(node, visit);std::cout<<std::endl;
     for (auto pos = alg::tree::tree_iterator<alg::tree::INORDER, int>(node); 
-        pos != alg::tree::tree_iterator<alg::tree::INORDER, int>(); pos++) {
+        pos != alg::tree::tree_iterator<alg::tree::INORDER, int>(); ++pos) {
         std::cout<<(*pos).val<<",";
     }
     std::cout<<std::endl;
@@ -33,7 +33,7 @@ int main() {
     //alg::tree::pre_order_traversal(node, visit);std::cout<<std::endl;
     //alg::tree::pre_order_traversal_iteratively(node, visit);std::cout<<std::endl;
     //for (auto pos = alg::tree::tree_iterator<alg::tree::PREORDER, int>(node); 
-    //    pos != alg::tree::tree_iterator<alg::tree::PREORDER, int>(); pos++) {
+    //    pos != alg::tree::tree_iterator<alg::tree::PREORDER, int>(); ++pos) {
     //    TRACE("%d", (*pos).val);
     //}
     //std::cout<<std::endl;
