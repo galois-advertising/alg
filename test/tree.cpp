@@ -29,6 +29,7 @@ int main() {
         std::cout<<(*pos).val<<",";
     }
     std::cout<<std::endl;
+    alg::tree::print<int>(node);
 
     //alg::tree::pre_order_traversal(node, visit);std::cout<<std::endl;
     //alg::tree::pre_order_traversal_iteratively(node, visit);std::cout<<std::endl;

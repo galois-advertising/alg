@@ -4,7 +4,8 @@
 #include <functional>
 #include <queue>
 #include "log.h"
+#include "default_tree_node.h"
 #include "tree_creator.h"
 #include "tree_traversal.h"
 #include "tree_iterator.h"
-#include "default_tree_node.h"
+#include "tree_print.h"
