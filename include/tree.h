@@ -9,3 +9,4 @@
 #include "tree_traversal.h"
 #include "tree_iterator.h"
 #include "tree_print.h"
+#include "tree_search.h"

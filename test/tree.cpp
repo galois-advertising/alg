@@ -30,6 +30,10 @@ int main() {
     }
     std::cout<<std::endl;
     alg::tree::print<int>(node);
+    auto cond = [](const alg::tree::default_tree_node_t<int>& node){ return node.val == 3;};
+    auto find_result = alg::tree::find_if<int>(node, 
+        static_cast<std::function<bool(const alg::tree::default_tree_node_t<int>&)>>(cond));
+    std::cout<<find_result->val<<std::endl;
 
     //alg::tree::pre_order_traversal(node, visit);std::cout<<std::endl;
     //alg::tree::pre_order_traversal_iteratively(node, visit);std::cout<<std::endl;
