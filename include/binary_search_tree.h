@@ -38,7 +38,7 @@ void bst_insert_iteratively(tree_node_t**root, const T& val) {
     }
 }
 
-template <typename K, typename tree_node_t = default_tree_node_t<T>>
+template <typename T, typename K = typename T::key_t, typename tree_node_t = default_tree_node_t<T>>
 tree_node_t* bst_search(tree_node_t*root, const K& key) {
     if (root == nullptr) {
         return nullptr;
