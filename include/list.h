@@ -29,7 +29,7 @@ template <typename T, typename list_node_t = default_list_node_t<T>>
 using copy_callback_t = std::function<void(list_node_t*, list_node_t*)>;
 
 template <typename T, typename list_node_t = default_list_node_t<T>>
-list_node_t* copy(list_node_t* list, copy_callback_t<T> callback = {}) {
+list_node_t* copy(list_node_t* list, copy_callback_t<T, list_node_t> callback = {}) {
     if (list == nullptr) {
         return nullptr;
     }
