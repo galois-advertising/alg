@@ -10,3 +10,4 @@
 #include "tree_iterator.h"
 #include "tree_print.h"
 #include "tree_search.h"
+#include "binary_search_tree.h"

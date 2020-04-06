@@ -7,7 +7,7 @@ namespace alg {
 
 
 inline int parent(unsigned int i) {
-    if (int res = (i - 1) / 2; res >= 0) {
+    if (int res = (static_cast<int>(i) - 1) / 2; res >= 0) {
         TRACE("parent(%u) = %d", i, res);
         return res;
     }
