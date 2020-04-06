@@ -16,5 +16,17 @@
             "externalConsole": false,
             "MIMode": "lldb",
         },
+        {
+            "name": "list",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/list",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+        },
     ]
 }
