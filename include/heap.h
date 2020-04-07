@@ -6,7 +6,7 @@
 namespace alg {
 
 
-inline int parent(unsigned int i) {
+inline int parent(int i) {
     if (int res = (i - 1) / 2; res >= 0) {
         TRACE("parent(%u) = %d", i, res);
         return res;
@@ -17,8 +17,8 @@ inline int parent(unsigned int i) {
     }
 }
 
-inline int left_child(unsigned int i, unsigned int end) {
-    if (int res = i * 2 + 1; res <= end) {
+inline int left_child(int i, int end) {
+    if (int res = i * 2 + 1; res >= 0 && res <= end) {
         TRACE("left_child(%u, %u) = %d", i, end, res);
         return res;
     }
@@ -28,8 +28,8 @@ inline int left_child(unsigned int i, unsigned int end) {
     }
 }
 
-inline int right_child(unsigned int i, unsigned int end) {
-    if (int res = i * 2 + 2; res <= end) {
+inline int right_child(int i, int end) {
+    if (int res = i * 2 + 2; res >= 0 && res <= end) {
         TRACE("right_child(%u, %u) = %d", i, end, res);
         return res;
     }
@@ -49,14 +49,14 @@ using cmp_t = typename std::add_pointer<bool(const typename T::value_type&, cons
 
 template <typename T>
 void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
-    if (begin > data.size() - 1 ||  end > data.size() - 1) {
+    if (begin + 1 > data.size() ||  end + 1 > data.size()) {
         return;
     }
     auto root = begin;
     while (true) {
         auto swap = root;
         if (auto lchild = left_child(root, end); 
-            lchild >=0 && !cmp(data[lchild], data[root])) {
+            lchild >= 0 && !cmp(data[lchild], data[root])) {
             swap = lchild;
             TRACE("swap target = %d[lchild]", swap);
         } 
@@ -76,15 +76,17 @@ void shift_down(T &data, unsigned begin, unsigned end, cmp_t<T> cmp) {
 }
 template <typename T>
 void make_heap(T &data, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
-    for (auto root = parent(data.size() - 1); root >= 0; --root) {
-        TRACE("shift_down %d[%d]", data[root], root);
-        shift_down(data, root, data.size() - 1, cmp);
+    if (!data.empty()) {
+        for (auto root = parent(data.size() - 1); root >= 0; --root) {
+            TRACE("shift_down %d[%d]", data[root], root);
+            shift_down(data, root, data.size() - 1, cmp);
+        }
     }
 }
 
 template <typename T>
 void pop_heap(T &data, size_t last, cmp_t<T> cmp = default_cmp<typename T::value_type>) {
-    if (last > data.size() - 1) {
+    if (last + 1 > data.size()) {
         FATAL("pop heap fail: last=[%lu]", last);
         return;
     }
