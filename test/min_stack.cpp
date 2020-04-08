@@ -7,7 +7,7 @@
 
 int main() {
     alg::min_stack::min_stack<int> msta;
-    std::list<int> input{5,6,4,7,3,8,1};
+    std::list<int> input{-2, 0, 1};
     for (auto i : input) {
         msta.push(i);
         TRACE("push: %d, min: %d", i, msta.min());

@@ -15,7 +15,7 @@ public:
         if (min_store.empty()) {
             min_store.push_back(t);
         } else {
-            min_store.push_back(std::min(t, store.back()));
+            min_store.push_back(std::min(t, min_store.back()));
         }
         store.push_back(t);
     }
