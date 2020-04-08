@@ -28,5 +28,18 @@
             "externalConsole": false,
             "MIMode": "lldb",
         },
+        {
+            "name": "randomized_set",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/randomized_set",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+        },
+    ]
     ]
 }
