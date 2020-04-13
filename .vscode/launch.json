@@ -40,6 +40,17 @@
             "externalConsole": false,
             "MIMode": "lldb",
         },
-    ]
+        {
+            "name": "util",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/util",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+        },
     ]
 }
