@@ -2,7 +2,7 @@
 #include "trie.h"
 
 int main() {
-    trie tr;
+    alg::trie tr;
     tr.insert("first");
     tr.insert("firtt");
     tr.insert("friend");
