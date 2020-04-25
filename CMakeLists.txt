@@ -37,3 +37,5 @@ add_executable(randomized_set ${SRCS} "${PROJECT_SOURCE_DIR}/test/randomized_set
 target_link_libraries(randomized_set boost_log-mt)
 add_executable(util ${SRCS} "${PROJECT_SOURCE_DIR}/test/util.cpp")
 target_link_libraries(util boost_log-mt)
+add_executable(str ${SRCS} "${PROJECT_SOURCE_DIR}/test/str.cpp")
+target_link_libraries(str boost_log-mt)

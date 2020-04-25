@@ -93,5 +93,9 @@ void sort(list_node_t** head, bool(*cmp)(const list_node_t*, const list_node_t*)
     }
 }
 
+template <typename T, typename list_node_t = default_list_node_t<T>>
+void merge_sort(list_node_t** head, bool(*cmp)(const list_node_t*, const list_node_t*)) {
+}
+
 
 };
