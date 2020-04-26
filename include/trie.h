@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
-
+namespace alg {
 class trie final {
 public:
     static const size_t ALPHABET_SIZE = 26;
@@ -11,8 +11,9 @@ public:
     public:
         char data = ' ';
         bool is_word = false;
+        size_t count = 0;
         std::shared_ptr<node> children[ALPHABET_SIZE];
-        node(char ch) : data(ch), is_word(false) {
+        node(char ch) : data(ch), is_word(false), count(0) {
             for (auto i = 0; i < ALPHABET_SIZE; ++i) {
                 children[i] = nullptr;
             }
@@ -29,6 +30,7 @@ public:
             if (pos->children[index] == nullptr) {
                 pos->children[index] = std::make_shared<node>(ch);
             } 
+            pos->children[index]->count++;
             pos = pos->children[index];
         }
         pos->is_word = true;
@@ -79,4 +81,5 @@ std::ostream& operator<< (std::ostream& os, const trie& tr) {
         os<<*tr.root;
     }
     return os;
+}
 }
