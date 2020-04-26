@@ -32,7 +32,7 @@ dfa_t dfa(std::string pattern, alpha_table_t& alpha_table = default_alpha_table)
     dfa_t dfa;
     for (q_t q = 0; q <= pattern.size(); q++) {
         for (auto ch : alpha_table) {
-            dfa[{q, ch}] = 0;
+            //dfa[{q, ch}] = 0;
             for (int len = pattern.size(); len >= 0; len--) {
                 auto current = (pattern.substr(0, q) + ch);
                 auto prefix = pattern.substr(0, len);
