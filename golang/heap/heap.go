@@ -1,8 +1,11 @@
 package heap
 
-type Comparable interface {
-	LessThan(j interface{}) bool
-	EqualTo(j interface{}) bool
+import "sort"
+
+type IItems interface {
+	sort.Interface
+	Push(x interface{})
+	Pop() interface{}
 }
 
 func left(idx int) int {
@@ -20,38 +23,56 @@ func parent(idx int) (int, bool) {
 	return 0, false
 }
 
-func heap_shift(heap []Comparable, idx int, heap_len int) {
-	target := idx
-	if left(idx) < heap_len && heap[left(idx)].LessThan(heap[target]) {
-		target = left(idx)
-	}
-	if right(idx) < heap_len && heap[right(idx)].LessThan(heap[target]) {
-		target = right(idx)
-	}
-	if target != idx {
-		heap[idx], heap[target] = heap[target], heap[idx]
-		heap_shift(heap, target, heap_len)
+func shift_up(heap IItems, idx int) {
+	if p, ok := parent(idx); ok {
+		if heap.Less(idx, p) {
+			heap.Swap(idx, p)
+			shift_up(heap, p)
+		}
 	}
 }
 
-func heap_make(heap []Comparable, heap_len int) {
-	if last_node, ok := parent(heap_len); ok {
+func shift_down(heap IItems, idx int) {
+	target := idx
+	if left(idx) < heap.Len() && heap.Less(left(idx), target) {
+		target = left(idx)
+	}
+	if right(idx) < heap.Len() && heap.Less(right(idx), target) {
+		target = right(idx)
+	}
+	if target != idx {
+		heap.Swap(idx, target)
+		shift_down(heap, target)
+	}
+}
+
+func Init(heap IItems) {
+	if last_node, ok := parent(heap.Len()); ok {
 		for last_node >= 0 {
-			heap_shift(heap, last_node, heap_len)
+			shift_down(heap, last_node)
 			last_node--
 		}
 	}
 }
 
-func heap_push(heap *[]Comparable, node Comparable) {
-	*heap = append(*heap, node)
-}
-
-func heap_pop(heap []Comparable, heap_len int) Comparable {
-	if heap_len == 0 {
+func Remove(heap IItems, i int) interface{} {
+	if i < 0 || i >= heap.Len() {
 		return nil
 	}
-	heap[0], heap[heap_len-1] = heap[heap_len-1], heap[0]
-	heap_shift(heap, 0, heap_len-1)
-	return heap[heap_len-1]
+	heap.Swap(i, heap.Len()-1)
+	ret := heap.Pop()
+	shift_down(heap, i)
+	return ret
+}
+
+func Pop(heap IItems) interface{} {
+	if heap.Len() > 0 {
+		return Remove(heap, 0)
+	}
+	return nil
+}
+
+func Push(heap IItems, i interface{}) {
+	heap.Push(i)
+	shift_up(heap, heap.Len()-1)
 }

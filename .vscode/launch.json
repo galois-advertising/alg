@@ -64,5 +64,14 @@
             "externalConsole": false,
             "MIMode": "lldb",
         },
+        {
+			"name": "go",
+			"type": "go",
+			"request": "launch",
+			"mode": "auto",
+			"program": "${workspaceFolder}/golang/heap",
+			"env": {},
+			"args": []
+		}
     ]
 }
